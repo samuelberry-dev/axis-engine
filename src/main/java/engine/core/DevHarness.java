@@ -1,18 +1,25 @@
 package engine.core;
 
-import engine.api.VoxelGame;
+import engine.voxels.*;
 
 public final class DevHarness {
     public static void main(String[] args) {
-        VoxelGame demo = new VoxelGame() {
-            public void onStart() { System.out.println("onStart"); }
-            public void onTick(float dt) { System.out.println("onTick " + dt); }
-            public void onRender() { System.out.println("onRender"); }
-            public void onStop() { System.out.println("onStop"); }
-        };
-        var settings = AppSettings.builder().title("AxisEngine DevHarness").build();
-        var rt = VoxelApp.launch(demo, settings);
-        VoxelApp.tickOnce(rt, 1.0f / 60f);
-        VoxelApp.stop(rt);
+        System.out.println("AxisEngine DevHarness — logic-only demo");
+
+        WorldImpl world = new WorldImpl();
+        BlockState stone = BlockState.of(1, 0);
+
+        world.setBlock(new BlockPos(0, 0, 0), stone);
+
+        world.setBlock(new BlockPos(16, 0, 0), stone);
+
+        world.setBlock(new BlockPos(-1, 0, -1), stone);
+
+        System.out.println("Chunks loaded: " + world.loadedChunkCount());
+        System.out.println("(0,0,0): " + world.getBlock(new BlockPos(0, 0, 0)));
+        System.out.println("(16,0,0): " + world.getBlock(new BlockPos(16, 0, 0)));
+        System.out.println("(-1,0,-1): " + world.getBlock(new BlockPos(-1, 0, -1)));
+
+        System.out.println("Done.");
     }
 }
