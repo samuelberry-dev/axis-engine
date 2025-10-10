@@ -1,7 +1,10 @@
 package engine.core;
 
 import engine.api.VoxelGame;
+import engine.voxels.World;
+import engine.voxels.WorldImpl;
 
+/** Entry point to launch the engine with a VoxelGame. */
 public final class VoxelApp {
     private VoxelApp() {}
 
@@ -9,7 +12,8 @@ public final class VoxelApp {
         if (game == null) throw new IllegalArgumentException("game == null");
         if (settings == null) throw new IllegalArgumentException("settings == null");
 
-        VoxelRuntime rt = new VoxelRuntime(settings, game);
+        World world = new WorldImpl(); // renderless world for now
+        VoxelRuntime rt = new VoxelRuntime(settings, game, world);
         game.onStart();
         rt.markRunning(true);
         return rt;
