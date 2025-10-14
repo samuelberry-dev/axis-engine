@@ -25,7 +25,8 @@ public class Mesh implements AutoCloseable {
     private final int vao, vbo, ebo;
     private final int indexCount;
 
-    private Mesh(int vao, int vbo, int ebo, int indexCount) {
+    Mesh(int vao, int vbo, int ebo, int indexCount) {
+
         this.vao = vao; this.vbo = vbo; this.ebo = ebo; this.indexCount = indexCount;
     }
 
