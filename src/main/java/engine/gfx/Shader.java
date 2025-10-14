@@ -23,6 +23,7 @@ import static org.lwjgl.opengl.GL20.glGetShaderi;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
@@ -65,21 +66,24 @@ public class Shader implements AutoCloseable {
     public static void unuse() { glUseProgram(0); }
     public int id() { return programId; }
 
-    public void setUniformMat4(int location, java.nio.FloatBuffer fb) {
-        glUniformMatrix4fv(location, false, fb);
-    }
-
     public int loc(String name) {
         int loc = glGetUniformLocation(programId, name);
         if (loc < 0) throw new IllegalStateException("Uniform not found: " + name);
         return loc;
     }
 
+    public void setUniformMat4(int location, java.nio.FloatBuffer fb) {
+        glUniformMatrix4fv(location, false, fb);
+    }
+
+    public void setUniform1i(int location, int value) {
+        glUniform1i(location, value);
+    }
+
     private static int compile(int type, String src) {
         int shader = glCreateShader(type);
         glShaderSource(shader, src);
         glCompileShader(shader);
-
         if (glGetShaderi(shader, GL_COMPILE_STATUS) == 0) {
             String log = glGetShaderInfoLog(shader);
             glDeleteShader(shader);
@@ -99,7 +103,5 @@ public class Shader implements AutoCloseable {
         }
     }
 
-    @Override public void close() {
-        glDeleteProgram(programId);
-    }
+    @Override public void close() { glDeleteProgram(programId); }
 }

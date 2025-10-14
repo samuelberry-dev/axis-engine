@@ -15,11 +15,13 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import org.lwjgl.system.MemoryStack;
 
 public class Renderer {
-    private int uMvpLoc = -1;
+    private int uMvpLoc = -1, uTexLoc = -1;
 
     public void initFor(Shader shader) {
         shader.use();
         uMvpLoc = shader.loc("uMVP");
+        uTexLoc = shader.loc("uTex0");
+        shader.setUniform1i(uTexLoc, 0); // bind sampler to texture unit 0
         Shader.unuse();
     }
 
@@ -39,6 +41,19 @@ public class Renderer {
             shader.setUniformMat4(uMvpLoc, fb);
         }
         mesh.draw();
+        Shader.unuse();
+    }
+
+    public void draw(Mesh mesh, Shader shader, Matrix4f mvp, Texture2D tex) {
+        shader.use();
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer fb = stack.mallocFloat(16);
+            mvp.get(fb);
+            shader.setUniformMat4(uMvpLoc, fb);
+        }
+        tex.bind(0);
+        mesh.draw();
+        Texture2D.unbind();
         Shader.unuse();
     }
 }
