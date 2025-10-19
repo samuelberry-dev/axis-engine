@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
 import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
 import static org.lwjgl.glfw.GLFW.glfwGetKey;
+import static org.lwjgl.glfw.GLFW.glfwGetMouseButton;
 
 public class Input {
     private final long window;
@@ -20,9 +21,14 @@ public class Input {
         glfwGetCursorPos(window, x, y);
         return x[0];
     }
+
     public double mouseY() {
         double[] x = new double[1], y = new double[1];
         glfwGetCursorPos(window, x, y);
         return y[0];
+    }
+
+    public boolean mouseButtonDown(int button) {
+        return glfwGetMouseButton(window, button) == GLFW_PRESS;
     }
 }

@@ -1,3 +1,6 @@
+group = "dev.samuelberry"
+version = "0.4.0"
+
 plugins {
     application
     java
@@ -7,40 +10,45 @@ java {
     toolchain { languageVersion.set(JavaLanguageVersion.of(17)) }
 }
 
-repositories { mavenCentral() }
+repositories {
+    mavenCentral()
+}
 
+// ----- LWJGL version & natives (Kotlin DSL) -----
 val lwjglVersion = "3.3.4"
+val os = org.gradle.internal.os.OperatingSystem.current()
+val lwjglNatives = when {
+    os.isWindows -> "natives-windows"
+    os.isLinux   -> "natives-linux"
+    else         -> "natives-macos"
+}
 
+// ----- Dependencies -----
 dependencies {
+    // Keep all LWJGL modules aligned via BOM
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
+
+    // Core LWJGL + math
     implementation("org.lwjgl:lwjgl")
     implementation("org.lwjgl:lwjgl-glfw")
     implementation("org.lwjgl:lwjgl-opengl")
-
-    runtimeOnly("org.lwjgl:lwjgl::natives-windows")
-    runtimeOnly("org.lwjgl:lwjgl-glfw::natives-windows")
-    runtimeOnly("org.lwjgl:lwjgl-opengl::natives-windows")
-
-    runtimeOnly("org.lwjgl:lwjgl::natives-linux")
-    runtimeOnly("org.lwjgl:lwjgl-glfw::natives-linux")
-    runtimeOnly("org.lwjgl:lwjgl-opengl::natives-linux")
-
-    runtimeOnly("org.lwjgl:lwjgl::natives-macos")
-    runtimeOnly("org.lwjgl:lwjgl-glfw::natives-macos")
-    runtimeOnly("org.lwjgl:lwjgl-opengl::natives-macos")
-
     implementation("org.joml:joml:1.10.5")
 
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    runtimeOnly("org.lwjgl:lwjgl::$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-glfw::$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-opengl::$lwjglNatives")
 
+    // Audio + OGG decoding
+    implementation("org.lwjgl:lwjgl-openal")
     implementation("org.lwjgl:lwjgl-stb")
-    runtimeOnly("org.lwjgl:lwjgl-stb::natives-windows")
+    runtimeOnly("org.lwjgl:lwjgl-openal::$lwjglNatives")
+    runtimeOnly("org.lwjgl:lwjgl-stb::$lwjglNatives")
 }
 
 tasks.test { useJUnitPlatform() }
 
 application {
+    // Set this to your real launcher. You had this before:
     mainClass.set("demo.DemoLauncher")
 }
 

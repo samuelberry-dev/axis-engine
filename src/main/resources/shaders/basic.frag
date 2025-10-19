@@ -1,10 +1,12 @@
 #version 330 core
-in vec3 vColor;
 in vec2 vUV;
+in float vLight;
+
 out vec4 FragColor;
 
 uniform sampler2D uTex0;
 
 void main() {
-    FragColor = texture(uTex0, vUV) * vec4(vColor, 1.0);
+    vec3 albedo = texture(uTex0, vUV).rgb;
+    FragColor = vec4(albedo * vLight, 1.0);
 }

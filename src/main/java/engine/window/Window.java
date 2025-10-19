@@ -13,4 +13,7 @@ public interface Window extends AutoCloseable {
     void setVsync(boolean vsync);
     void setTitle(String title);
     @Override void close();
+
+    void setCursorDisabled(boolean disabled);
+    void setCursorHidden(boolean hidden);
 }

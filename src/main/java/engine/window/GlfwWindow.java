@@ -1,6 +1,11 @@
 package engine.window;
 
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_DISABLED;
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_HIDDEN;
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
+import static org.lwjgl.glfw.GLFW.GLFW_RAW_MOUSE_MOTION;
 import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
 import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
 import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
@@ -9,7 +14,9 @@ import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwRawMouseMotionSupported;
 import static org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowTitle;
@@ -64,6 +71,18 @@ public class GlfwWindow implements Window {
     @Override public void setVsync(boolean vsync) { glfwSwapInterval(vsync ? 1 : 0); }
     @Override public void setTitle(String title) { glfwSetWindowTitle(handle, title); }
 
+    @Override
+    public void setCursorDisabled(boolean disabled) {
+        glfwSetInputMode(handle, GLFW_CURSOR, disabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+        if (glfwRawMouseMotionSupported()) {
+            glfwSetInputMode(handle, GLFW_RAW_MOUSE_MOTION, disabled ? GLFW_TRUE : GLFW_FALSE);
+        }
+    }
+
+    @Override
+    public void setCursorHidden(boolean hidden) {
+        glfwSetInputMode(handle, GLFW_CURSOR, hidden ? GLFW_CURSOR_HIDDEN : GLFW_CURSOR_NORMAL);
+    }
     @Override public void close() {
         glfwDestroyWindow(handle);
         glfwTerminate();

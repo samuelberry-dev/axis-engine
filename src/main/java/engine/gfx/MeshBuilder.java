@@ -4,11 +4,19 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import org.lwjgl.system.MemoryUtil;
 
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import org.lwjgl.system.MemoryUtil;
 
 public class MeshBuilder {
     private final List<Float> v = new ArrayList<>();
@@ -68,7 +76,7 @@ public class MeshBuilder {
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(1, 3, GL_FLOAT, false, stride, 3L * Float.BYTES);    // aColor
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(2, 2, GL_FLOAT, false, stride, 6L * Float.BYTES);    // aUV (unused yet)
+        glVertexAttribPointer(2, 2, GL_FLOAT, false, stride, 6L * Float.BYTES);
         glEnableVertexAttribArray(2);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);

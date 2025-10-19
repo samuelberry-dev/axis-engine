@@ -20,26 +20,21 @@ public class CubeScene implements AutoCloseable {
     private float angle = 0f;
 
     public void init(EngineContext ctx) {
-        // Shaders & renderer
         shader = Shader.fromResources("shaders/basic.vert", "shaders/basic.frag");
         renderer = new Renderer();
         renderer.initFor(shader);
 
-        // Camera setup
         camera = new Camera();
         float aspect = Math.max(1, ctx.window().width()) / (float) Math.max(1, ctx.window().height());
         camera.setPerspective((float)Math.toRadians(60), aspect, 0.1f, 100f);
         camera.lookAt(0f, 0f, 3f, 0f, 0f, 0f);
 
-        // Load the 3x2 atlas at src/main/resources/textures/atlas.png
         atlas = Texture2D.fromResource("textures/atlas.png", true);
 
-        // Build a cube with per-face UVs from a 3x2 atlas (cols=3, rows=2)
         MeshBuilder mb = new MeshBuilder();
         float s = 0.5f;
         float[] white = {1, 1, 1};
 
-        // Atlas layout helper (cy=0 is bottom row because we flipped on load)
         final float cols = 3f, rows = 2f;
         final float du = 1f / cols, dv = 1f / rows;
         java.util.function.BiFunction<Integer, Integer, float[][]> tile = (cx, cy) -> {
@@ -50,7 +45,6 @@ public class CubeScene implements AutoCloseable {
             };
         };
 
-        // Choose six distinct tiles:
         float[][] F = tile.apply(0, 0); // Front  = red
         float[][] R = tile.apply(1, 0); // Right  = green
         float[][] B = tile.apply(2, 0); // Back   = blue
