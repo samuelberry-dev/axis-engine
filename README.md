@@ -1,4 +1,4 @@
-# AxisEngine v0.2.0 — Lightweight 3D Engine Core
+# AxisEngine v1.0.0 — Lightweight 3D Engine Core
 ---
 
 <p align="center">
@@ -10,13 +10,10 @@
 
 ---
 
-## Current Progress
-**v0.2.0 (M2 milestone)**  
-✅ Window + Loop + Input + Time  
-✅ Shader + Mesh + Camera  
-✅ Rotating 3D Cube Demo (Depth + Culling)
+## Status (v1.0.0)
 
-Next up → MeshBuilder + Renderer abstraction.
+- Right now is fully ready for game development!
+- Texturing, Audio, Shading, you name it!
 
 ---
 
@@ -24,20 +21,30 @@ Next up → MeshBuilder + Renderer abstraction.
 ```bash
 git clone https://github.com/samuelberry-dev/axis-engine
 cd axis-engine
+
+# Windows
+.\gradlew.bat run
+# macOS / Linux
 ./gradlew run
 ```
 
-## Modules
-- `engine.core` — lifecycle, context, config
-- `engine.window` — GLFW window wrapper
-- `engine.input` — keyboard/mouse
-- `engine.time` — delta time + FPS
-- `engine.gfx` — shader, mesh, camera
-- `engine.demo` — rotating cube showcase
+> You should see a window with a rotating textured cube.
 
 ---
 
 ## Requirements
 - Java 17+
-- Gradle 8.9+
-- LWJGL 3.3.4
+- Gradle 8.9+ (wrapper included)
+- LWJGL 3.3.4 (resolved via Gradle)
+
+---
+
+## Roadmap
+- idk ill figure it out
+
+---
+
+## License
+MIT
+
+---
